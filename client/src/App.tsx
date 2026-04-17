@@ -18,6 +18,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiFetch } from './api';
 import { Role, User, ChangeRequest } from './types';
 import { FacultyDashboard } from './components/FacultyDashboard';
 import { ApproverDashboard } from './components/ApproverDashboard';
@@ -110,7 +111,7 @@ export default function App() {
       } else if (currentUser.role === 'STUDENT') {
         roleParam += `&studentRegNum=${currentUser.student_reg_num?.trim()}`;
       }
-      const res = await fetch(`/api/requests?${roleParam}`);
+      const res = await apiFetch(`/api/requests?${roleParam}`);
       if (!res.ok) throw new Error('Failed to fetch analytics data');
       const data = await res.json();
       setAllRequests(data);
@@ -135,7 +136,7 @@ export default function App() {
     setIsLoggingIn(true);
     
     try {
-      const res = await fetch('/api/login', {
+      const res = await apiFetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailInput, password: passwordInput })
@@ -167,7 +168,7 @@ export default function App() {
     setIsSubmittingReg(true);
 
     try {
-      const res = await fetch('/api/register', {
+      const res = await apiFetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -206,7 +207,7 @@ export default function App() {
     setIsUpdatingProfile(true);
     setProfileUpdateError(null);
     try {
-      const res = await fetch(`/api/users/${currentUser.id}`, {
+      const res = await apiFetch(`/api/users/${currentUser.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

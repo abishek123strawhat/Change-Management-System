@@ -15,6 +15,7 @@ import {
   Filter
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiFetch } from '../api';
 import { ChangeRequest, User, Role } from '../types';
 import { ErrorAlert } from './ui/ErrorAlert';
 
@@ -39,7 +40,7 @@ export const ApproverDashboard: React.FC<ApproverDashboardProps> = ({ user, role
   const fetchRequests = useCallback(async () => {
     try {
       setError(null);
-      const res = await fetch(`/api/requests?role=${role}`);
+      const res = await apiFetch(`/api/requests?role=${role}`);
       if (!res.ok) throw new Error('Failed to fetch requests');
       const data = await res.json();
       setRequests(data);
@@ -61,7 +62,7 @@ export const ApproverDashboard: React.FC<ApproverDashboardProps> = ({ user, role
     
     setActionError(null);
     try {
-      const res = await fetch(`/api/requests/${id}/${endpoint}`, {
+      const res = await apiFetch(`/api/requests/${id}/${endpoint}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

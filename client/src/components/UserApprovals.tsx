@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { User } from '../types';
 import { motion } from 'motion/react';
+import { apiFetch } from '../api';
 import { CheckCircle2, XCircle, User as UserIcon, Clock } from 'lucide-react';
 import { ErrorAlert } from './ui/ErrorAlert';
 
@@ -16,7 +17,7 @@ export const UserApprovals: React.FC<UserApprovalsProps> = ({ currentUser }) => 
   const fetchPendingUsers = useCallback(async () => {
     try {
       setError(null);
-      const res = await fetch(`/api/pending-users?role=${currentUser.role}`);
+      const res = await apiFetch(`/api/pending-users?role=${currentUser.role}`);
       if (!res.ok) throw new Error('Failed to fetch pending users');
       const data = await res.json();
       setPendingUsers(data);
@@ -35,7 +36,7 @@ export const UserApprovals: React.FC<UserApprovalsProps> = ({ currentUser }) => 
   const handleAction = async (userId: string, action: 'APPROVED' | 'REJECTED') => {
     try {
       setError(null);
-      const res = await fetch(`/api/users/${userId}/approve`, {
+      const res = await apiFetch(`/api/users/${userId}/approve`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: action })

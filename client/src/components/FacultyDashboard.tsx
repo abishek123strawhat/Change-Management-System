@@ -15,6 +15,7 @@ import {
   ClipboardCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiFetch } from '../api';
 import { ChangeRequest, User } from '../types';
 import { ErrorAlert } from './ui/ErrorAlert';
 
@@ -49,7 +50,7 @@ export const FacultyDashboard: React.FC<FacultyDashboardProps> = ({ user, search
   const fetchRequests = useCallback(async () => {
     try {
       setError(null);
-      const res = await fetch(`/api/requests?role=FACULTY&facultyId=${user.id}`);
+      const res = await apiFetch(`/api/requests?role=FACULTY&facultyId=${user.id}`);
       if (!res.ok) throw new Error('Failed to fetch requests');
       const data = await res.json();
       setRequests(data);
@@ -70,7 +71,7 @@ export const FacultyDashboard: React.FC<FacultyDashboardProps> = ({ user, search
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const res = await fetch('/api/requests', {
+      const res = await apiFetch('/api/requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
