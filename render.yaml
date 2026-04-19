@@ -1,0 +1,18 @@
+# Render Deployment Configuration
+services:
+  - type: web
+    name: cms-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false # Set this in Render dashboard
+      - key: GEMINI_API_KEY
+        sync: false # Set this in Render dashboard
+      - key: CLIENT_URL
+        sync: false # Set this in Render dashboard
